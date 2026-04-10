@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PhishGuard</title>
+<title>PhishGuard Email Coach Email Coach</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0a0e1a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
@@ -87,7 +87,9 @@
 <body>
 
 <header>
-  <div class="logo">Phish<span>Guard</span></div>
+  PhishGuard Email Coach<div class="logo">
+  <img src="/static/logo.png" style="height:40px;vertical-align:middle;margin-right:10px;">
+</div>
   <div class="privacy-badge">🔒 Emails are never stored</div>
 </header>
 
@@ -246,7 +248,7 @@
     const res = await fetch('/report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ analysis: currentAnalysis, reporter_name: 'PhishGuard User' })
+      body: JSON.stringify({ analysis: currentAnalysis, reporter_name: 'PhishGuard Email Coach Email Coach User' })
     });
     const data = await res.json();
     await navigator.clipboard.writeText(data.report);
