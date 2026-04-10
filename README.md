@@ -4,17 +4,16 @@
 **AI-Powered Phishing Email Analyzer for Security Teams and End Users**
 
 Live demo: https://web-production-8fc7d.up.railway.app  
-Built for the OpenAI x Handshake Codex Creator Challenge
 
 ---
 
 ## What it does
 
-Phishing is the #1 attack vector in cybersecurity. 97% of users cannot reliably identify sophisticated phishing emails. PhishGuard lets anyone paste a suspicious email and get an instant, AI-powered threat assessment in seconds.
+Phishing is the #1 attack vector in cybersecurity. 97% of users cannot reliably identify sophisticated phishing emails. PhishGuard Email Coach lets anyone paste a suspicious email and get an instant, AI-powered threat assessment in seconds.
 
-**Without PhishGuard:** A SOC analyst or end user receives a suspicious email, manually cross-references sender domains, inspects URLs, checks headers, and writes an incident report — taking 15–20 minutes per email.
+**Without PhishGuard Email Coach:** A SOC analyst or end user receives a suspicious email, manually cross-references sender domains, inspects URLs, checks headers, and writes an incident report — taking 15–20 minutes per email.
 
-**With PhishGuard:** Paste the email → get risk level, indicator breakdown, action guide, and a copy-paste IT report in under 10 seconds.
+**With PhishGuard Email Coach:** Paste the email → get risk level, indicator breakdown, action guide, and a copy-paste IT report in under 10 seconds.
 
 ---
 
@@ -85,8 +84,8 @@ Frontend renders:
 **Prerequisites:** Python 3.10+, OpenAI API key
 
 ```bash
-git clone https://github.com/suryaprakash737/phishguard
-cd phishguard/backend
+git clone https://github.com/suryaprakash737/PhishGuard Email Coach
+cd PhishGuard Email Coach/backend
 python -m venv venv
 venv\Scripts\activate        # Windows
 pip install -r requirements.txt
@@ -146,7 +145,7 @@ curl -X POST https://web-production-8fc7d.up.railway.app/analyze \
 ## Project structure
 
 ```
-phishguard/
+PhishGuard Email Coach/
 ├── backend/
 │   ├── main.py              # FastAPI app — all endpoints
 │   ├── requirements.txt     # Python dependencies
@@ -170,6 +169,6 @@ GitHub: https://github.com/suryaprakash737
 
 ## Why this matters
 
-Phishing accounts for over 80% of reported security incidents. Existing tools are either too technical for end users or too slow for high-volume SOC environments. PhishGuard bridges that gap — giving non-technical users plain-English guidance while giving analysts the technical depth they need, all from the same interface in under 10 seconds.
+Phishing accounts for over 80% of reported security incidents. Existing tools are either too technical for end users or too slow for high-volume SOC environments. PhishGuard Email Coach bridges that gap — giving non-technical users plain-English guidance while giving analysts the technical depth they need, all from the same interface in under 10 seconds.
 
 
