@@ -146,7 +146,7 @@
   let examples = [];
 
   // Load examples from API
-  fetch('http://127.0.0.1:8000/examples')
+  fetch('/examples')
     .then(r => r.json())
     .then(data => { examples = data.examples; });
 
@@ -176,7 +176,7 @@
     document.getElementById('results').style.display = 'block';
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/analyze', {
+      const res = await fetch('/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email_text: emailText, mode: currentMode })
@@ -243,7 +243,7 @@
 
   async function copyReport() {
     if (!currentAnalysis) return;
-    const res = await fetch('http://127.0.0.1:8000/report', {
+    const res = await fetch('/report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ analysis: currentAnalysis, reporter_name: 'PhishGuard User' })
