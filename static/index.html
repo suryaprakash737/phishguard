@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhishGuard Email Coach</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230d4f6e'/><path d='M50 20 L72 31 L72 54 Q72 69 50 81 Q28 69 28 54 L28 31 Z' fill='none' stroke='white' stroke-width='3'/><path d='M40 50 L47 57 L62 42' stroke='%237dd4a8' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e1a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  header { background: #0d1117; border-bottom: 1px solid #1e2d3d; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-size: 22px; font-weight: 700; color: #58a6ff; letter-spacing: -0.5px; }
+  .logo span { color: #f0883e; }
+  .privacy-badge { font-size: 12px; color: #8b949e; background: #161b22; border: 1px solid #30363d; padding: 4px 10px; border-radius: 20px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .tagline { text-align: center; margin-bottom: 32px; }
+  .tagline h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .tagline p { color: #8b949e; font-size: 15px; }
+
+  .privacy-notice { background: #0d2137; border: 1px solid #1e4976; border-radius: 8px; padding: 10px 16px; margin-bottom: 24px; font-size: 13px; color: #79c0ff; display: flex; align-items: center; gap: 8px; }
+
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .panel { background: #0d1117; border: 1px solid #1e2d3d; border-radius: 12px; padding: 20px; }
+  .panel-title { font-size: 13px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+
+  textarea { width: 100%; height: 220px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; color: #e2e8f0; font-size: 13px; padding: 12px; resize: vertical; font-family: 'Consolas', monospace; line-height: 1.5; }
+  textarea:focus { outline: none; border-color: #58a6ff; }
+
+  .examples { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .example-btn { background: #161b22; border: 1px solid #30363d; color: #8b949e; padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+  .example-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+
+  .mode-toggle { display: flex; gap: 0; margin-top: 14px; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; width: fit-content; }
+  .mode-btn { padding: 7px 18px; font-size: 13px; cursor: pointer; border: none; background: transparent; color: #8b949e; }
+  .mode-btn.active { background: #1f6feb; color: white; }
+
+  .analyze-btn { width: 100%; margin-top: 14px; padding: 12px; background: #1f6feb; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .analyze-btn:hover { background: #388bfd; }
+  .analyze-btn:disabled { background: #21262d; color: #484f58; cursor: not-allowed; }
+
+  /* Risk badge */
+  .risk-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 8px; font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+  .risk-HIGH { background: rgba(248,81,73,0.15); color: #f85149; border: 1px solid rgba(248,81,73,0.3); }
+  .risk-MEDIUM { background: rgba(210,153,34,0.15); color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+  .risk-LOW { background: rgba(63,185,80,0.15); color: #3fb950; border: 1px solid rgba(63,185,80,0.3); }
+
+  .confidence-bar-wrap { margin-bottom: 16px; }
+  .confidence-label { font-size: 12px; color: #8b949e; margin-bottom: 4px; }
+  .confidence-bar { height: 6px; background: #21262d; border-radius: 3px; }
+  .confidence-fill { height: 100%; border-radius: 3px; background: #1f6feb; }
+
+  .verdict { font-size: 14px; color: #c9d1d9; margin-bottom: 18px; line-height: 1.5; padding: 10px 14px; background: #161b22; border-radius: 6px; border-left: 3px solid #58a6ff; }
+
+  .indicators-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .indicator-card { padding: 10px 14px; border-radius: 8px; font-size: 13px; }
+  .ind-HIGH { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.2); }
+  .ind-MEDIUM { background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.2); }
+  .ind-LOW { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.2); }
+  .ind-title { font-weight: 600; margin-bottom: 3px; }
+  .ind-reason { color: #8b949e; font-size: 12px; }
+
+  .section-label { font-size: 12px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: 0.6px; margin: 14px 0 8px; }
+  .actions-list { display: flex; flex-direction: column; gap: 6px; }
+  .action-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #c9d1d9; }
+  .action-item::before { content: "→"; color: #58a6ff; flex-shrink: 0; }
+
+  .analyst-box { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #8b949e; font-family: 'Consolas', monospace; line-height: 1.6; margin-top: 8px; }
+
+  .copy-btn { width: 100%; margin-top: 16px; padding: 10px; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 8px; font-size: 13px; cursor: pointer; }
+  .copy-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+  .copy-btn.copied { border-color: #3fb950; color: #3fb950; }
+
+  /* Email highlight */
+  .email-preview { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; font-size: 13px; font-family: 'Consolas', monospace; line-height: 1.7; white-space: pre-wrap; word-break: break-word; max-height: 200px; overflow-y: auto; margin-top: 14px; }
+  mark { background: rgba(248,81,73,0.25); color: #f85149; border-radius: 3px; padding: 1px 2px; }
+
+  .placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; color: #484f58; font-size: 14px; gap: 8px; }
+  .placeholder-icon { font-size: 36px; }
+
+  .loading { display: flex; align-items: center; justify-content: center; height: 200px; gap: 12px; color: #8b949e; }
+  .spinner { width: 24px; height: 24px; border: 3px solid #21262d; border-top-color: #58a6ff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' style='height:28px;vertical-align:middle;margin-right:8px;'><circle cx='50' cy='50' r='48' fill='%230d4f6e'/><path d='M50 20 L72 31 L72 54 Q72 69 50 81 Q28 69 28 54 L28 31 Z' fill='none' stroke='white' stroke-width='3'/><path d='M40 50 L47 57 L62 42' stroke='%237dd4a8' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>PhishGuard Email Coach</div>
+  <div class="privacy-badge">🔒 Emails are never stored</div>
+</header>
+
+<div class="container">
+  <div class="tagline">
+    <h1>AI-Powered Phishing Email Analyzer</h1>
+    <p>Paste any suspicious email to get an instant threat assessment, indicator breakdown, and action guide.</p>
+  </div>
+
+  <div class="privacy-notice">
+    🔒 Your email is analyzed in real-time and never stored on our servers. Avoid pasting emails containing passwords or SSNs.
+  </div>
+
+  <div class="main-grid">
+    <!-- LEFT: Input -->
+    <div class="panel">
+      <div class="panel-title">Email Input</div>
+      <textarea id="emailInput" placeholder="Paste the full email here — headers, subject, and body..."></textarea>
+
+      <div class="examples">
+        <span style="font-size:12px;color:#484f58;align-self:center;">Try an example:</span>
+        <button class="example-btn" onclick="loadExample(0)">PayPal Phish</button>
+        <button class="example-btn" onclick="loadExample(1)">Bank Spear Phish</button>
+        <button class="example-btn" onclick="loadExample(2)">IT Helpdesk</button>
+      </div>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="userModeBtn" onclick="setMode('user')">👤 User Mode</button>
+        <button class="mode-btn" id="analystModeBtn" onclick="setMode('analyst')">🔬 Analyst Mode</button>
+      </div>
+
+      <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">Analyze Email</button>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="panel" id="resultsPanel">
+      <div class="panel-title">Analysis Results</div>
+      <div class="placeholder" id="placeholder">
+        <div class="placeholder-icon">🛡️</div>
+        <div>Paste an email and click Analyze</div>
+      </div>
+      <div id="results" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Email with highlights -->
+  <div class="panel" style="margin-top:24px;display:none" id="highlightPanel">
+    <div class="panel-title">Email with Suspicious Phrases Highlighted</div>
+    <div class="email-preview" id="emailHighlight"></div>
+  </div>
+</div>
+
+<script>
+  let currentMode = 'user';
+  let currentAnalysis = null;
+  let examples = [];
+
+  // Load examples from API
+  fetch('/examples')
+    .then(r => r.json())
+    .then(data => { examples = data.examples; });
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('userModeBtn').classList.toggle('active', mode === 'user');
+    document.getElementById('analystModeBtn').classList.toggle('active', mode === 'analyst');
+  }
+
+  function loadExample(i) {
+    if (examples[i]) {
+      document.getElementById('emailInput').value = examples[i].email.replace(/\\n/g, '\n');
+    }
+  }
+
+  async function analyze() {
+    const emailText = document.getElementById('emailInput').value.trim();
+    if (!emailText) { alert('Please paste an email first.'); return; }
+
+    const btn = document.getElementById('analyzeBtn');
+    btn.disabled = true;
+    btn.textContent = 'Analyzing...';
+
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('results').innerHTML = '<div class="loading"><div class="spinner"></div> Analyzing with AI...</div>';
+    document.getElementById('results').style.display = 'block';
+
+    try {
+      const res = await fetch('/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email_text: emailText, mode: currentMode })
+      });
+      const data = await res.json();
+      currentAnalysis = data;
+      renderResults(data, emailText);
+    } catch (e) {
+      document.getElementById('results').innerHTML = '<div style="color:#f85149;padding:20px">Error connecting to backend. Is the server running?</div>';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Analyze Email';
+  }
+
+  function renderResults(data, emailText) {
+    const indicators = (data.indicators || []).map(i => `
+      <div class="indicator-card ind-${i.severity}">
+        <div class="ind-title">${i.text}</div>
+        <div class="ind-reason">${i.reason}</div>
+      </div>
+    `).join('');
+
+    const actions = (data.recommended_actions || []).map(a =>
+      `<div class="action-item">${a}</div>`
+    ).join('');
+
+    const analystSection = currentMode === 'analyst' ? `
+      <div class="section-label">Analyst Notes</div>
+      <div class="analyst-box">${data.analyst_notes || 'N/A'}</div>
+    ` : '';
+
+    document.getElementById('results').innerHTML = `
+      <div class="risk-badge risk-${data.risk_level}">
+        ${data.risk_level === 'HIGH' ? '🔴' : data.risk_level === 'MEDIUM' ? '🟡' : '🟢'}
+        ${data.risk_level} RISK
+      </div>
+      <div class="confidence-bar-wrap">
+        <div class="confidence-label">Confidence: ${data.confidence}%</div>
+        <div class="confidence-bar"><div class="confidence-fill" style="width:${data.confidence}%"></div></div>
+      </div>
+      <div class="verdict">${data.verdict}</div>
+      <div class="section-label">Indicators Found</div>
+      <div class="indicators-list">${indicators}</div>
+      <div class="section-label">What To Do</div>
+      <div class="actions-list">${actions}</div>
+      ${analystSection}
+      <button class="copy-btn" id="copyBtn" onclick="copyReport()">📋 Copy IT Report</button>
+    `;
+
+    // Highlight suspicious phrases in email
+    const phrases = data.highlighted_phrases || [];
+    let highlighted = emailText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    phrases.forEach(p => {
+      if (p.text) {
+        const escaped = p.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        highlighted = highlighted.replace(new RegExp(escaped, 'gi'),
+          match => `<mark title="${p.reason}">${match}</mark>`);
+      }
+    });
+    document.getElementById('emailHighlight').innerHTML = highlighted;
+    document.getElementById('highlightPanel').style.display = 'block';
+  }
+
+  async function copyReport() {
+    if (!currentAnalysis) return;
+    const res = await fetch('/report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ analysis: currentAnalysis, reporter_name: 'PhishGuard Email Coach User' })
+    });
+    const data = await res.json();
+    await navigator.clipboard.writeText(data.report);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Copied to clipboard!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy IT Report'; btn.classList.remove('copied'); }, 2000);
+  }
+</script>
+</body>
+</html>
